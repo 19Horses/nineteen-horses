@@ -1,6 +1,5 @@
 import * as p from '@p5-wrapper/react';
 import { asciiHorse } from './asciiHorse';
-import monoRegular from './fonts/mono.ttf';
 
 export const reveal = (p5: p.P5CanvasInstance) => {
   const charSize = 10;
@@ -13,17 +12,10 @@ export const reveal = (p5: p.P5CanvasInstance) => {
   };
 
   let normalizedHorse: AsciiChar[] = [];
-  let font: any;
-
-  p5.preload = () => {
-    font = p5.loadFont(monoRegular);
-  };
 
   p5.setup = () => {
     p5.frameRate(30);
     p5.createCanvas(innerWidth, innerHeight);
-
-    p5.textFont(font);
     p5.fill('black');
 
     normalizedHorse = resetHorsePos();
@@ -53,14 +45,6 @@ export const reveal = (p5: p.P5CanvasInstance) => {
       p5.fill(fill);
       p5.text(char === ' ' ? '-' : char, xPos, yPos);
     }
-
-    p5.fill('white');
-    p5.textSize(16);
-    p5.text(
-      '19 Horses',
-      innerWidth / 2 - (asciiHorse[0].length * charSize) / 2,
-      innerHeight / 2 - (asciiHorse.length * charSize) / 2 - 20
-    );
   };
 
   function resetHorsePos() {
