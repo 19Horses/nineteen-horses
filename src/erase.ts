@@ -2,7 +2,7 @@ import * as p from '@p5-wrapper/react';
 import { asciiHorse } from './asciiHorse';
 import monoRegular from './fonts/mono.ttf';
 
-export const reveal = (p5: p.P5CanvasInstance) => {
+export const erase = (p5: p.P5CanvasInstance) => {
   const charSize = 10;
 
   type AsciiChar = {

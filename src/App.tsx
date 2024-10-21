@@ -1,8 +1,8 @@
 import { ReactP5Wrapper } from '@p5-wrapper/react';
 import { attractOrRepel } from './attractOrRepel';
-import { reveal } from './reveal';
+import { erase } from './erase';
 
-const possibleSketches = [attractOrRepel, reveal];
+const possibleSketches = [attractOrRepel, erase];
 
 const App = () => {
   const sketch =
