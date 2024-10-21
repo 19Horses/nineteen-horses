@@ -2,17 +2,14 @@ import * as p from '@p5-wrapper/react';
 import { asciiHorse } from './asciiHorse';
 import monoRegular from './fonts/mono.ttf';
 
-export const sketch = (p5: p.P5CanvasInstance) => {
-  const attract = [true, false][Math.floor(Math.random() * 2)];
+export const erase = (p5: p.P5CanvasInstance) => {
   const charSize = 10;
-
-  let isMouseOnCanvas = false;
 
   type AsciiChar = {
     char: string;
     xPos: number;
     yPos: number;
-    shouldDraw: boolean;
+    fill: string;
   };
 
   let normalizedHorse: AsciiChar[] = [];
@@ -24,10 +21,7 @@ export const sketch = (p5: p.P5CanvasInstance) => {
 
   p5.setup = () => {
     p5.frameRate(30);
-    const canvas = p5.createCanvas(innerWidth, innerHeight);
-
-    canvas.mouseOver(overCanvas);
-    canvas.mouseOut(outCanvas);
+    p5.createCanvas(innerWidth, innerHeight);
 
     p5.textFont(font);
     p5.fill('white');
@@ -36,7 +30,6 @@ export const sketch = (p5: p.P5CanvasInstance) => {
   };
 
   p5.windowResized = () => {
-    console.log('hey');
     resetHorsePos();
     p5.resizeCanvas(innerWidth, innerHeight);
   };
@@ -46,35 +39,21 @@ export const sketch = (p5: p.P5CanvasInstance) => {
     p5.textSize(charSize);
 
     for (let i = 0; i < normalizedHorse.length; i++) {
-      const { char, shouldDraw } = normalizedHorse[i];
-      let { xPos, yPos } = normalizedHorse[i];
-
-      if (!shouldDraw) {
-        continue;
-      }
-
-      if (isMouseOnCanvas) {
-        const m = p5.createVector(xPos - p5.mouseX, yPos - p5.mouseY);
-        const distance = p5.max(p5.dist(xPos, yPos, p5.mouseX, p5.mouseY), 1);
-        m.normalize();
-
-        const s = 250 / distance;
-        xPos = attract ? xPos - m.x * s : xPos + m.x * s;
-        yPos = attract ? yPos - m.y * s : yPos + m.y * s;
-
+      const { char, xPos, yPos, fill } = normalizedHorse[i];
+      const d = p5.dist(xPos, yPos, p5.mouseX, p5.mouseY);
+      if (d < 50) {
         normalizedHorse[i] = {
           char,
           xPos,
           yPos,
-          shouldDraw: distance < 30 ? false : true,
+          fill: 'black',
         };
       }
-
-      if (shouldDraw) {
-        p5.text(char === ' ' ? '-' : char, xPos, yPos);
-      }
+      p5.fill(fill);
+      p5.text(char === ' ' ? '-' : char, xPos, yPos);
     }
 
+    p5.fill('white');
     p5.textSize(16);
     p5.text(
       '19 Horses',
@@ -98,18 +77,10 @@ export const sketch = (p5: p.P5CanvasInstance) => {
           char,
           xPos,
           yPos,
-          shouldDraw: true,
+          fill: 'white',
         });
       }
     }
     return normalizedHorse;
-  }
-
-  function overCanvas() {
-    isMouseOnCanvas = true;
-  }
-
-  function outCanvas() {
-    isMouseOnCanvas = false;
   }
 };
