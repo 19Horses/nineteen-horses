@@ -34,7 +34,7 @@ export const floatingAround = (p5: p5) => {
       .textToPoints(
         '19 Horses',
         p5.width / 2 - p5.textWidth('19 Horses') / 2,
-        150,
+        p5.height / 2 - boxWidth / 2 - 24,
         20,
         {
           sampleFactor: 0.6,
