@@ -11,15 +11,41 @@ export const floatingAround = (p5: p5) => {
     font = p5.loadFont(monoRegular);
   };
 
+  let textPoints: Character[];
+
   p5.setup = () => {
     p5.frameRate(30);
     p5.createCanvas(innerWidth, innerHeight);
     p5.textSize(10);
     p5.textFont(font);
     p5.fill('white');
-    p5.textAlign(p5.CENTER);
-    p5.rectMode(p5.CENTER);
+    p5.textAlign(p5.CENTER, p5.CENTER);
     normalizedHorse = resetHorsePos();
+    p5.push();
+    p5.textSize(16);
+    textPoints = font
+      .textToPoints(
+        '19 Horses',
+        p5.width / 2 - p5.textWidth('19 Horses') / 2,
+        150,
+        16,
+        {
+          sampleFactor: 1,
+        }
+      )
+      .map((p) => {
+        return new Character(
+          p5.random(p5.width),
+          p5.random(p5.height),
+          p5.random(-1, 1),
+          p5.random(-1, 1),
+          p.x,
+          p.y,
+          '.',
+          p5
+        );
+      });
+    p5.pop();
   };
 
   p5.windowResized = () => {
@@ -38,10 +64,18 @@ export const floatingAround = (p5: p5) => {
       c.update();
       c.display();
     });
+    textPoints.forEach((p) => {
+      p.update();
+      p.display();
+    });
   };
 
   p5.mousePressed = () => {
     normalizedHorse.forEach((c) => {
+      c.moveToFinalPosition();
+    });
+
+    textPoints.forEach((c) => {
       c.moveToFinalPosition();
     });
   };
