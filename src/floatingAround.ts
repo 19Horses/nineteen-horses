@@ -3,10 +3,20 @@ import { asciiHorse } from './asciiHorse';
 import monoRegular from './fonts/mono.ttf';
 import { Character } from './charatcer';
 
+const getBoxWidth = (screenWidth: number) => {
+  if (screenWidth < 600) {
+    return screenWidth - 40;
+  } else if (screenWidth < 1000) {
+    return 400;
+  } else {
+    return screenWidth / 3;
+  }
+};
+
 export const floatingAround = (p5: p5) => {
   let normalizedHorse: Character[] = [];
   let font: p5.Font;
-  const boxWidth = innerWidth < 600 ? innerWidth - 40 : innerWidth / 3;
+  const boxWidth = getBoxWidth(innerWidth);
   const startingPosition = {
     x: innerWidth / 2 - boxWidth / 2,
     y: innerHeight / 2 - boxWidth / 2,
@@ -64,6 +74,9 @@ export const floatingAround = (p5: p5) => {
     p5.background(0);
 
     const finishedChars = normalizedHorse.filter((c) => c.isInFinalPos);
+    const offScreenChars = normalizedHorse.filter((c) => c.isDone);
+    const renderForm = offScreenChars.length === normalizedHorse.length;
+
     normalizedHorse.forEach((c) => {
       if (finishedChars.length === normalizedHorse.length) {
         c.falling = true;
@@ -75,6 +88,14 @@ export const floatingAround = (p5: p5) => {
       p.update();
       p.display();
     });
+
+    // Template below
+    p5.push();
+    p5.noFill();
+    p5.stroke('white');
+    p5.circle(startingPosition.x, startingPosition.y, 20);
+    p5.rect(p5.width / 2, p5.height / 2, boxWidth);
+    p5.pop();
   };
 
   p5.mousePressed = () => {
