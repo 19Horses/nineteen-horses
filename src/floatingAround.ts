@@ -75,13 +75,6 @@ export const floatingAround = (p5: p5) => {
       p.update();
       p.display();
     });
-
-    p5.push();
-    p5.noFill();
-    p5.stroke('white');
-    p5.circle(startingPosition.x, startingPosition.y, 20);
-    p5.rect(p5.width / 2, p5.height / 2, boxWidth);
-    p5.pop();
   };
 
   p5.mousePressed = () => {
