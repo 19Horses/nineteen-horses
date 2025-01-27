@@ -16,6 +16,7 @@ const getBoxWidth = (screenWidth: number) => {
 export const floatingAround = (p5: p5) => {
   let normalizedHorse: Character[] = [];
   let font: p5.Font;
+
   const boxWidth = getBoxWidth(innerWidth);
   const startingPosition = {
     x: innerWidth / 2 - boxWidth / 2,
@@ -31,14 +32,12 @@ export const floatingAround = (p5: p5) => {
   p5.setup = () => {
     p5.frameRate(30);
     p5.createCanvas(innerWidth, innerHeight);
-    p5.textSize(10);
     p5.textFont(font);
     p5.fill('white');
     p5.rectMode(p5.CENTER);
     p5.textAlign(p5.CENTER, p5.CENTER);
     normalizedHorse = resetHorsePos();
 
-    p5.push();
     p5.textSize(20);
     textPoints = font
       .textToPoints(
@@ -62,7 +61,8 @@ export const floatingAround = (p5: p5) => {
           p5
         );
       });
-    p5.pop();
+
+    p5.textSize(10);
   };
 
   p5.windowResized = () => {
