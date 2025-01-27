@@ -6,6 +6,11 @@ import { Character } from './charatcer';
 export const floatingAround = (p5: p5) => {
   let normalizedHorse: Character[] = [];
   let font: p5.Font;
+  const boxWidth = innerWidth < 600 ? innerWidth - 40 : innerWidth / 3;
+  const startingPosition = {
+    x: innerWidth / 2 - boxWidth / 2,
+    y: innerHeight / 2 - boxWidth / 2,
+  };
 
   p5.preload = () => {
     font = p5.loadFont(monoRegular);
@@ -19,18 +24,20 @@ export const floatingAround = (p5: p5) => {
     p5.textSize(10);
     p5.textFont(font);
     p5.fill('white');
+    p5.rectMode(p5.CENTER);
     p5.textAlign(p5.CENTER, p5.CENTER);
     normalizedHorse = resetHorsePos();
+
     p5.push();
-    p5.textSize(16);
+    p5.textSize(20);
     textPoints = font
       .textToPoints(
         '19 Horses',
         p5.width / 2 - p5.textWidth('19 Horses') / 2,
         150,
-        16,
+        20,
         {
-          sampleFactor: 1,
+          sampleFactor: 0.6,
         }
       )
       .map((p) => {
@@ -41,7 +48,7 @@ export const floatingAround = (p5: p5) => {
           p5.random(-1, 1),
           p.x,
           p.y,
-          '.',
+          '-',
           p5
         );
       });
@@ -49,7 +56,7 @@ export const floatingAround = (p5: p5) => {
   };
 
   p5.windowResized = () => {
-    resetHorsePos();
+    normalizedHorse = resetHorsePos();
     p5.resizeCanvas(innerWidth, innerHeight);
   };
 
@@ -68,6 +75,13 @@ export const floatingAround = (p5: p5) => {
       p.update();
       p.display();
     });
+
+    p5.push();
+    p5.noFill();
+    p5.stroke('white');
+    p5.circle(startingPosition.x, startingPosition.y, 20);
+    p5.rect(p5.width / 2, p5.height / 2, boxWidth);
+    p5.pop();
   };
 
   p5.mousePressed = () => {
@@ -81,10 +95,10 @@ export const floatingAround = (p5: p5) => {
   };
 
   function resetHorsePos() {
-    const charSize = 10;
-    const xOffset = p5.width / 2 - (asciiHorse[0].length * charSize) / 2;
-    const yOffset = p5.height / 2 - (asciiHorse.length * charSize) / 2;
-    normalizedHorse = [];
+    const charSize = boxWidth / asciiHorse[0].length + 1;
+    const xOffset = startingPosition.x + p5.textWidth('-') / 2;
+    const yOffset = startingPosition.y;
+    const horse = [];
     for (let y = 0; y < asciiHorse.length; y++) {
       const asciiRow = asciiHorse[y];
 
@@ -96,11 +110,11 @@ export const floatingAround = (p5: p5) => {
         const yPos = p5.random(p5.height);
         const xSpd = p5.random(-1, 1);
         const ySpd = p5.random(-1, 1);
-        normalizedHorse.push(
+        horse.push(
           new Character(xPos, yPos, xSpd, ySpd, finalXPos, finalYPos, char, p5)
         );
       }
     }
-    return normalizedHorse;
+    return horse;
   }
 };
