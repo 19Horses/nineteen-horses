@@ -24,3 +24,7 @@ body {
   opacity: 1;
   animation: fadeIn 0.5s linear;
 }
+
+.form-input {
+  color: black;
+}

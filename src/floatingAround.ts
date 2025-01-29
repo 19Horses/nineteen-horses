@@ -70,15 +70,29 @@ export const floatingAround = (p5: p5) => {
     p5.resizeCanvas(innerWidth, innerHeight);
   };
 
+  let hasSavedFinishedTime = false;
+  let finishedAnimatingTime: null | number = null;
+
   p5.draw = () => {
     p5.background(0);
 
     const finishedChars = normalizedHorse.filter((c) => c.isInFinalPos);
     const offScreenChars = normalizedHorse.filter((c) => c.isDone);
+
+    if (
+      !hasSavedFinishedTime &&
+      finishedChars.length === normalizedHorse.length
+    ) {
+      finishedAnimatingTime = p5.millis();
+      hasSavedFinishedTime = true;
+    }
+
     const renderForm = offScreenChars.length === normalizedHorse.length;
 
     normalizedHorse.forEach((c) => {
-      if (finishedChars.length === normalizedHorse.length) {
+      const halfSecondSinceFinishing =
+        finishedAnimatingTime && p5.millis() - finishedAnimatingTime > 500;
+      if (halfSecondSinceFinishing) {
         c.falling = true;
       }
       c.update();
@@ -90,12 +104,12 @@ export const floatingAround = (p5: p5) => {
     });
 
     // Template below
-    p5.push();
-    p5.noFill();
-    p5.stroke('white');
-    p5.circle(startingPosition.x, startingPosition.y, 20);
-    p5.rect(p5.width / 2, p5.height / 2, boxWidth);
-    p5.pop();
+    // p5.push();
+    // p5.noFill();
+    // p5.stroke('white');
+    // p5.circle(startingPosition.x, startingPosition.y, 20);
+    // p5.rect(p5.width / 2, p5.height / 2, boxWidth);
+    // p5.pop();
   };
 
   p5.mousePressed = () => {
