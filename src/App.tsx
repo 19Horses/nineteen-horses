@@ -1,14 +1,22 @@
 import { ReactP5Wrapper } from '@p5-wrapper/react';
-import { attractOrRepel } from './attractOrRepel';
-import { erase } from './erase';
+import p5 from 'p5';
+import { memo, useCallback, useState } from 'react';
 import { floatingAround } from './floatingAround';
 
-const possibleSketches = [floatingAround];
+const MemoizedP5Wrapper = memo(ReactP5Wrapper);
 
 const App = () => {
-  const sketch =
-    possibleSketches[Math.floor(Math.random() * possibleSketches.length)];
-  return <ReactP5Wrapper sketch={sketch} />;
+  const [isReady, setIsReady] = useState(false);
+  const sketch = useCallback(
+    (p5: p5) => floatingAround(p5, () => setIsReady(true)),
+    []
+  );
+  console.log(isReady);
+  return (
+    <>
+      <MemoizedP5Wrapper sketch={sketch} />;
+    </>
+  );
 };
 
 export default App;

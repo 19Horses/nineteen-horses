@@ -13,7 +13,7 @@ const getBoxWidth = (screenWidth: number) => {
   }
 };
 
-export const floatingAround = (p5: p5) => {
+export const floatingAround = (p5: p5, setIsReady: () => void) => {
   let normalizedHorse: Character[] = [];
   let font: p5.Font;
 
@@ -72,12 +72,18 @@ export const floatingAround = (p5: p5) => {
 
   let hasSavedFinishedTime = false;
   let finishedAnimatingTime: null | number = null;
+  let done = false;
 
   p5.draw = () => {
     p5.background(0);
 
     const finishedChars = normalizedHorse.filter((c) => c.isInFinalPos);
     const offScreenChars = normalizedHorse.filter((c) => c.isDone);
+
+    if (!done && offScreenChars.length === normalizedHorse.length) {
+      setIsReady();
+      done = true;
+    }
 
     if (
       !hasSavedFinishedTime &&
@@ -86,8 +92,6 @@ export const floatingAround = (p5: p5) => {
       finishedAnimatingTime = p5.millis();
       hasSavedFinishedTime = true;
     }
-
-    const renderForm = offScreenChars.length === normalizedHorse.length;
 
     normalizedHorse.forEach((c) => {
       const halfSecondSinceFinishing =
@@ -102,14 +106,6 @@ export const floatingAround = (p5: p5) => {
       p.update();
       p.display();
     });
-
-    // Template below
-    // p5.push();
-    // p5.noFill();
-    // p5.stroke('white');
-    // p5.circle(startingPosition.x, startingPosition.y, 20);
-    // p5.rect(p5.width / 2, p5.height / 2, boxWidth);
-    // p5.pop();
   };
 
   p5.mousePressed = () => {
