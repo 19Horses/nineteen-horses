@@ -1,7 +1,7 @@
 import p5 from 'p5';
 import { asciiHorse } from './asciiHorse';
 import monoRegular from './fonts/mono.ttf';
-import { Character } from './charatcer';
+import { Character } from './character';
 
 const getBoxWidth = (screenWidth: number) => {
   if (screenWidth < 600) {
@@ -27,8 +27,6 @@ export const floatingAround = (p5: p5, setIsReady: () => void) => {
     font = p5.loadFont(monoRegular);
   };
 
-  let textPoints: Character[];
-
   p5.setup = () => {
     p5.frameRate(30);
     p5.createCanvas(innerWidth, innerHeight);
@@ -39,40 +37,20 @@ export const floatingAround = (p5: p5, setIsReady: () => void) => {
     normalizedHorse = resetHorsePos();
 
     p5.textSize(20);
-    textPoints = font
-      .textToPoints(
-        '19 Horses',
-        p5.width / 2 - p5.textWidth('19 Horses') / 2,
-        p5.height / 2 - boxWidth / 2 - 24,
-        20,
-        {
-          sampleFactor: 0.6,
-        }
-      )
-      .map((p) => {
-        return new Character(
-          p5.random(p5.width),
-          p5.random(p5.height),
-          p5.random(-1, 1),
-          p5.random(-1, 1),
-          p.x,
-          p.y,
-          '-',
-          p5
-        );
-      });
 
     p5.textSize(10);
-  };
-
-  p5.windowResized = () => {
-    normalizedHorse = resetHorsePos();
-    p5.resizeCanvas(innerWidth, innerHeight);
   };
 
   let hasSavedFinishedTime = false;
   let finishedAnimatingTime: null | number = null;
   let done = false;
+
+  p5.windowResized = () => {
+    if (!done) {
+      normalizedHorse = resetHorsePos();
+    }
+    p5.resizeCanvas(innerWidth, innerHeight);
+  };
 
   p5.draw = () => {
     p5.background(0);
@@ -102,18 +80,10 @@ export const floatingAround = (p5: p5, setIsReady: () => void) => {
       c.update();
       c.display();
     });
-    textPoints.forEach((p) => {
-      p.update();
-      p.display();
-    });
   };
 
   p5.mousePressed = () => {
     normalizedHorse.forEach((c) => {
-      c.moveToFinalPosition();
-    });
-
-    textPoints.forEach((c) => {
       c.moveToFinalPosition();
     });
   };
@@ -134,9 +104,20 @@ export const floatingAround = (p5: p5, setIsReady: () => void) => {
         const yPos = p5.random(p5.height);
         const xSpd = p5.random(-1, 1);
         const ySpd = p5.random(-1, 1);
-        horse.push(
-          new Character(xPos, yPos, xSpd, ySpd, finalXPos, finalYPos, char, p5)
-        );
+        if (char !== ' ') {
+          horse.push(
+            new Character(
+              xPos,
+              yPos,
+              xSpd,
+              ySpd,
+              finalXPos,
+              finalYPos,
+              char,
+              p5
+            )
+          );
+        }
       }
     }
     return horse;

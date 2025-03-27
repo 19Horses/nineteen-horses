@@ -76,6 +76,6 @@ export class Character {
   }
 
   display() {
-    this.p5.text(this.char === ' ' ? '-' : this.char, this.x, this.y);
+    this.p5.text(this.char, this.x, this.y);
   }
 }
