@@ -2,29 +2,30 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
+@font-face {
+  font-family: 'Mono';
+  src: url('fonts/mono.ttf');
+}
+
 body {
   margin: 0;
   overflow: hidden;
+  font-family: 'Mono';
+  position: relative;
+  background-color: black;
 }
 
-.hidden {
-  opacity: 0;
+#root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-.show {
-  opacity: 1;
-  animation: fadeIn 0.5s linear;
-}
-
-.form-input {
-  color: black;
+.react-p5-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
 }

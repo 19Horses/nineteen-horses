@@ -1,6 +1,7 @@
 import { ReactP5Wrapper } from '@p5-wrapper/react';
 import p5 from 'p5';
 import { memo, useCallback, useState } from 'react';
+import { ClientDetails } from './components/ClientDetails';
 import { floatingAround } from './floatingAround';
 
 const MemoizedP5Wrapper = memo(ReactP5Wrapper);
@@ -11,10 +12,11 @@ const App = () => {
     (p5: p5) => floatingAround(p5, () => setIsReady(true)),
     []
   );
-  console.log(isReady);
+
   return (
     <>
-      <MemoizedP5Wrapper sketch={sketch} />;
+      {isReady && <ClientDetails />}
+      <MemoizedP5Wrapper sketch={sketch} />
     </>
   );
 };
