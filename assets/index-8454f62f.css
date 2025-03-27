@@ -1,0 +1,1 @@
+:root{font-family:Inter,system-ui,Avenir,Helvetica,Arial,sans-serif}@font-face{font-family:Mono;src:url(./mono-cd5c21df.ttf)}body{margin:0;overflow:hidden;font-family:Mono;position:relative;background-color:#000}#root{width:100vw;height:100vh;display:flex;align-items:center;justify-content:center}.react-p5-wrapper{position:absolute;top:0;left:0;z-index:-1}
