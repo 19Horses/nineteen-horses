@@ -29,6 +29,11 @@ export const randomHorses = (p5: p5, setIsReady: () => void) => {
 
   p5.windowResized = () => {
     p5.resizeCanvas(innerWidth, innerHeight);
+    horses.forEach((horse, i) => {
+      const existingHorses = horses.slice(0, i);
+      horse.updatePosition(existingHorses);
+    });
+    p5.clear();
   };
 
   p5.draw = () => {
