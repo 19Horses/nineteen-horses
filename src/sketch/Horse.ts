@@ -1,5 +1,19 @@
 import p5 from 'p5';
-import { TextBounds } from './Text';
+import { BoundingBox } from './Text';
+import { isMobile } from 'react-device-detect';
+
+function isRectOverlap(r1: BoundingBox, r2: BoundingBox) {
+  if (
+    r1.x + r1.w / 2 > r2.x - r2.w / 2 &&
+    r1.x - r1.w / 2 < r2.x + r2.w / 2 &&
+    r1.y + r1.h / 2 > r2.y - r2.h / 2 &&
+    r1.y - r1.h / 2 < r2.y + r2.h / 2
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
 export class Horse {
   src: string;
@@ -21,12 +35,17 @@ export class Horse {
   }
 
   updateSize() {
-    this.w = this.img.width / 5;
-    this.h = this.img.height / 5;
+    const divider = isMobile ? 9 : 5;
+    this.w = this.img.width / divider;
+    this.h = this.img.height / divider;
   }
 
-  updatePosition(existingHorses: Horse[], textBounds: TextBounds) {
-    const maxAttempts = 20;
+  updatePosition(
+    existingHorses: Horse[],
+    textBounds: BoundingBox,
+    form: BoundingBox
+  ) {
+    const maxAttempts = 50;
     let attempt = 0;
     let overlapping = true;
 
@@ -40,13 +59,17 @@ export class Horse {
             (this.w + other.w) / 2
       );
 
-      const inTextBounds =
-        this.x + this.w / 2 > textBounds.x &&
-        this.x - this.w / 2 < textBounds.x + textBounds.w &&
-        this.y + this.h / 2 > textBounds.y &&
-        this.y - this.h / 2 < textBounds.y + textBounds.h;
+      const imageBounds = {
+        x: this.x,
+        y: this.y,
+        w: this.w,
+        h: this.y,
+      };
+      if (isRectOverlap(imageBounds, form)) {
+        overlapping = true;
+      }
 
-      if (inTextBounds) {
+      if (isRectOverlap(imageBounds, textBounds)) {
         overlapping = true;
       }
 

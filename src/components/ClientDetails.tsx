@@ -12,7 +12,7 @@ import {
   ErrorMessage,
 } from './styles';
 
-export const ClientDetails = () => {
+export const ClientDetails = ({ formWidth }: { formWidth: number }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -68,7 +68,11 @@ export const ClientDetails = () => {
   return (
     <>
       {showForm && (
-        <Form $isSubmitted={isSubmitted} onSubmit={handleSubmit}>
+        <Form
+          $width={formWidth}
+          $isSubmitted={isSubmitted}
+          onSubmit={handleSubmit}
+        >
           <InputContainer>
             <Label htmlFor="name">Name:</Label>
             <Input

@@ -2,13 +2,18 @@ import p5 from 'p5';
 import monoRegular from '../fonts/mono.ttf';
 import { horseImages } from './horses';
 import { Horse } from './Horse';
-import { Text } from './Text';
+import { BoundingBox, Text } from './Text';
 
-export const randomHorses = (p5: p5, setIsReady: () => void) => {
+export const randomHorses = (
+  p5: p5,
+  setIsReady: () => void,
+  formWidth: number
+) => {
   let font: p5.Font;
   const horses: Horse[] = [];
   const fontSize = 24;
   let title: Text;
+  let form: BoundingBox;
 
   p5.preload = () => {
     font = p5.loadFont(monoRegular);
@@ -26,11 +31,17 @@ export const randomHorses = (p5: p5, setIsReady: () => void) => {
     p5.createCanvas(innerWidth, innerHeight);
 
     title = new Text(p5);
+    form = {
+      x: p5.width / 2,
+      y: p5.height / 2,
+      w: formWidth,
+      h: p5.height * 0.5,
+    };
 
     horses.forEach((horse, i) => {
       const existingHorses = horses.slice(0, i);
       horse.updateSize();
-      horse.updatePosition(existingHorses, title.textBounds);
+      horse.updatePosition(existingHorses, title.textBounds, form);
     });
   };
 
@@ -38,7 +49,7 @@ export const randomHorses = (p5: p5, setIsReady: () => void) => {
     p5.resizeCanvas(innerWidth, innerHeight);
     horses.forEach((horse, i) => {
       const existingHorses = horses.slice(0, i);
-      horse.updatePosition(existingHorses, title.textBounds);
+      horse.updatePosition(existingHorses, title.textBounds, form);
     });
     p5.clear();
   };

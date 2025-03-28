@@ -1,6 +1,6 @@
 import p5 from 'p5';
 
-export type TextBounds = {
+export type BoundingBox = {
   x: number;
   y: number;
   w: number;
@@ -11,7 +11,7 @@ export class Text {
   pos: { x: number; y: number };
   p5: p5;
 
-  textBounds: TextBounds;
+  textBounds: BoundingBox;
 
   constructor(p5: p5) {
     this.p5 = p5;
@@ -44,6 +44,6 @@ export class Text {
       '19 Horses',
       this.pos.x,
       this.pos.y
-    ) as TextBounds;
+    ) as BoundingBox;
   }
 }

@@ -1,4 +1,3 @@
-import { isMobile } from 'react-device-detect';
 import { keyframes, styled } from 'styled-components';
 
 const fadeIn = keyframes`
@@ -25,8 +24,8 @@ const fadeOut = keyframes`
   }
 `;
 
-export const Form = styled.form<{ $isSubmitted: boolean }>`
-  width: 100%;
+export const Form = styled.form<{ $isSubmitted: boolean; $width: number }>`
+  width: ${({ $width }) => $width}px;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -54,10 +53,6 @@ export const Form = styled.form<{ $isSubmitted: boolean }>`
 
   & > *:nth-child(4) {
     animation-delay: 0.6s;
-  }
-
-  & > *:nth-child(5) {
-    animation-delay: 0.8s;
   }
 `;
 
@@ -107,7 +102,7 @@ export const InputContainer = styled.div`
   justify-content: center;
   gap: 8px;
   flex-direction: column;
-  width: ${isMobile ? '80%' : '25%'};
+  width: 100%;
 `;
 
 export const Button = styled.button`
@@ -156,7 +151,7 @@ export const ErrorMessage = styled.p`
   margin: 0;
   opacity: 0;
   animation: ${fadeIn} 0.5s ease-in-out forwards;
-  width: ${isMobile ? '80%' : '25%'};
+  width: 100%;
 `;
 
 export const ThankYouMessage = styled.p`
