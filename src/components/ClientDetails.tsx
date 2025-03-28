@@ -1,18 +1,17 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import {
+  Button,
+  ErrorMessage,
   Form,
+  Input,
   InputContainer,
   Label,
-  Input,
-  TextArea,
-  Button,
-  Title,
   Loader,
+  TextArea,
   ThankYouMessage,
-  ErrorMessage,
 } from './styles';
 
-export const ClientDetails = () => {
+export const ClientDetails = ({ formWidth }: { formWidth: number }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -68,8 +67,11 @@ export const ClientDetails = () => {
   return (
     <>
       {showForm && (
-        <Form $isSubmitted={isSubmitted} onSubmit={handleSubmit}>
-          <Title>19 Horses</Title>
+        <Form
+          $width={formWidth}
+          $isSubmitted={isSubmitted}
+          onSubmit={handleSubmit}
+        >
           <InputContainer>
             <Label htmlFor="name">Name:</Label>
             <Input
