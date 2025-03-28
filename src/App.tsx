@@ -2,7 +2,7 @@ import { ReactP5Wrapper } from '@p5-wrapper/react';
 import p5 from 'p5';
 import { memo, useCallback, useState } from 'react';
 import { ClientDetails } from './components/ClientDetails';
-import { randomHorses } from './randomHorses';
+import { randomHorses } from './sketch';
 
 const MemoizedP5Wrapper = memo(ReactP5Wrapper);
 
