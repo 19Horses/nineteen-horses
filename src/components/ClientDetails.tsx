@@ -1,15 +1,14 @@
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import {
+  Button,
+  ErrorMessage,
   Form,
+  Input,
   InputContainer,
   Label,
-  Input,
-  TextArea,
-  Button,
-  Title,
   Loader,
+  TextArea,
   ThankYouMessage,
-  ErrorMessage,
 } from './styles';
 
 export const ClientDetails = ({ formWidth }: { formWidth: number }) => {

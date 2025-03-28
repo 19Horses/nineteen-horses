@@ -56,13 +56,6 @@ export const Form = styled.form<{ $isSubmitted: boolean; $width: number }>`
   }
 `;
 
-export const Title = styled.p`
-  color: white;
-  text-align: left;
-  margin-bottom: 20px;
-  font-size: 16px;
-`;
-
 export const Label = styled.label`
   color: white;
   font-size: 16px;
