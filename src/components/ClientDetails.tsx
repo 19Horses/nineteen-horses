@@ -69,7 +69,6 @@ export const ClientDetails = () => {
     <>
       {showForm && (
         <Form $isSubmitted={isSubmitted} onSubmit={handleSubmit}>
-          <Title>19 Horses</Title>
           <InputContainer>
             <Label htmlFor="name">Name:</Label>
             <Input

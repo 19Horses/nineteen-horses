@@ -1,4 +1,5 @@
 import p5 from 'p5';
+import { TextBounds } from './Text';
 
 export class Horse {
   src: string;
@@ -24,7 +25,7 @@ export class Horse {
     this.h = this.img.height / 5;
   }
 
-  updatePosition(existingHorses: Horse[]) {
+  updatePosition(existingHorses: Horse[], textBounds: TextBounds) {
     const maxAttempts = 20;
     let attempt = 0;
     let overlapping = true;
@@ -38,6 +39,17 @@ export class Horse {
           this.p5.dist(this.x, this.y, other.x, other.y) <
             (this.w + other.w) / 2
       );
+
+      const inTextBounds =
+        this.x + this.w / 2 > textBounds.x &&
+        this.x - this.w / 2 < textBounds.x + textBounds.w &&
+        this.y + this.h / 2 > textBounds.y &&
+        this.y - this.h / 2 < textBounds.y + textBounds.h;
+
+      if (inTextBounds) {
+        overlapping = true;
+      }
+
       attempt++;
     }
   }

@@ -2,12 +2,13 @@ import p5 from 'p5';
 import monoRegular from '../fonts/mono.ttf';
 import { horseImages } from './horses';
 import { Horse } from './Horse';
+import { Text } from './Text';
 
 export const randomHorses = (p5: p5, setIsReady: () => void) => {
   let font: p5.Font;
   const horses: Horse[] = [];
-  let done = false;
-  const fontSize = 20;
+  const fontSize = 24;
+  let title: Text;
 
   p5.preload = () => {
     font = p5.loadFont(monoRegular);
@@ -22,12 +23,14 @@ export const randomHorses = (p5: p5, setIsReady: () => void) => {
     p5.textAlign(p5.CENTER, p5.CENTER);
     p5.textFont(font);
     p5.textSize(fontSize);
-    p5.noCursor();
     p5.createCanvas(innerWidth, innerHeight);
+
+    title = new Text(p5);
+
     horses.forEach((horse, i) => {
       const existingHorses = horses.slice(0, i);
       horse.updateSize();
-      horse.updatePosition(existingHorses);
+      horse.updatePosition(existingHorses, title.textBounds);
     });
   };
 
@@ -35,7 +38,7 @@ export const randomHorses = (p5: p5, setIsReady: () => void) => {
     p5.resizeCanvas(innerWidth, innerHeight);
     horses.forEach((horse, i) => {
       const existingHorses = horses.slice(0, i);
-      horse.updatePosition(existingHorses);
+      horse.updatePosition(existingHorses, title.textBounds);
     });
     p5.clear();
   };
@@ -48,16 +51,7 @@ export const randomHorses = (p5: p5, setIsReady: () => void) => {
 
     const doneHorses = horses.filter((h) => h.isDone);
 
-    p5.push();
-    p5.fill('white');
-
-    const content = `${doneHorses.length.toString()} Horses`;
-    const margin = 10;
-
-    const x = p5.width - p5.textWidth(content) / 2;
-    const y = fontSize / 2;
-    p5.text(content, x - margin, y + margin);
-    p5.pop();
+    title.draw(doneHorses.length);
 
     if (doneHorses.length === horses.length) {
       setIsReady();
